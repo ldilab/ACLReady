@@ -38,9 +38,11 @@ class SafeLLMRerank:
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.query_engine import MultiStepQueryEngine
 from llama_index.core.retrievers import RecursiveRetriever
-from llama_index.embeddings.openai import OpenAIEmbedding
+# from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.embeddings.ollama import OllamaEmbedding
 from llama_index.embeddings.together import TogetherEmbedding
-from llama_index.llms.openai import OpenAI
+# from llama_index.llms.openai import OpenAI
+from llama_index.llms.ollama import Ollama
 
 import nest_asyncio
 import requests
@@ -648,13 +650,19 @@ def process_file(filename):
     # E1. Section Or Justification
 
     # https://platform.openai.com/docs/guides/embeddings/what-are-embeddings
-    embed_model = OpenAIEmbedding(model = 'text-embedding-ada-002')
+    # embed_model = OpenAIEmbedding(model = 'text-embedding-ada-002')
     #embed_model = TogetherEmbedding(model_name="togethercomputer/m2-bert-80M-8k-retrieval", api_key = togetherai_api_key)
+    embed_model = OllamaEmbedding(
+        base_url="http://ldi.snu.ac.kr:11434", model="llama3.1:latest",
+        ollama_additional_kwargs={"mirostat": 0},
+        request_timeout=120.0
+    )
 
     model_name = "gpt-3.5-turbo"
     #model_name = "gpt-4o-2024-05-13"
-    llm = OpenAI(api_key=openai_api_key, temperature=0, model=model_name, chunk_size_limit=2048, )
+    # llm = OpenAI(api_key=openai_api_key, temperature=0, model=model_name, chunk_size_limit=2048, )
 
+    llm = Ollama(base_url="http://ldi.snu.ac.kr:11434", model="llama3.1:latest", request_timeout=120.0)
     #model_name = 'Llama-3-70b-chat-hf'
 
     #model_source = 'meta-llama'
