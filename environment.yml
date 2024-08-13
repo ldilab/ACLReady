@@ -12,6 +12,8 @@ dependencies:
     - jupyterlab # For convienence, this is not needed for application to run
     - llama-index
     - llama-index-embeddings-together # These are the llama model embeddings
+    - llama-index-llms-ollama
+    - llama-index-embeddings-ollama
     - matplotlib #llama index wants this or server.py wants this for running external python file
     - openai
     - pylatexenc # read latex (.tex) files
